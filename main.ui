@@ -54,6 +54,15 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="locale">
+     <locale language="Finnish" country="Finland"/>
+    </property>
+    <property name="displayFormat">
+     <string>yyyy-MM-dd</string>
+    </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -76,6 +85,15 @@
       <width>62</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <double>100.000000000000000</double>
+    </property>
+    <property name="maximum">
+     <double>400.000000000000000</double>
+    </property>
+    <property name="stepType">
+     <enum>QAbstractSpinBox::DefaultStepType</enum>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -100,6 +118,12 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="minimum">
+     <double>20.000000000000000</double>
+    </property>
+    <property name="maximum">
+     <double>3000.000000000000000</double>
+    </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
@@ -114,7 +138,7 @@
      <string>Paino</string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="NeckSpinBox">
+   <widget class="QSpinBox" name="neckSpinBox">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -122,6 +146,9 @@
       <width>42</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>10</number>
     </property>
    </widget>
    <widget class="QSpinBox" name="waistSpinBox">
@@ -133,8 +160,14 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="minimum">
+     <number>30</number>
+    </property>
+    <property name="maximum">
+     <number>200</number>
+    </property>
    </widget>
-   <widget class="QSpinBox" name="hipSpinBox_3">
+   <widget class="QSpinBox" name="hipSpinBox">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -142,6 +175,12 @@
       <width>42</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="minimum">
+     <number>50</number>
+    </property>
+    <property name="maximum">
+     <number>200</number>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -218,6 +257,15 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="locale">
+     <locale language="Finnish" country="Finland"/>
+    </property>
+    <property name="displayFormat">
+     <string>yyyy-MM-dd</string>
+    </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
@@ -241,16 +289,29 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="locale">
+     <locale language="Finnish" country="Finland"/>
+    </property>
     <property name="placeholderText">
      <string>Valitse sukupuoli</string>
     </property>
+    <item>
+     <property name="text">
+      <string>Mies</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Nainen</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="bmiLabel">
     <property name="geometry">
      <rect>
       <x>20</x>
       <y>220</y>
-      <width>101</width>
+      <width>311</width>
       <height>16</height>
      </rect>
     </property>
@@ -358,7 +419,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
