@@ -8,6 +8,7 @@ from PyQt5 import QtWidgets as QW # UI elements functionality
 from PyQt5.uic import loadUi # Reads the UI file
 import kuntoilija # Home brew module for athlete objects
 import timetools # DIY module for date and time calculations
+import athleteFile # Home made module for processing data files
 # TODO: Import some library able to plot trends and make it as widget in the UI
 
 # Class for the main window
@@ -43,9 +44,9 @@ class MainWindow(QW.QMainWindow):
         self.neckSB.valueChanged.connect(self.activateCalculatePB)
         self.waistSB = self.waistSpinBox
         self.waistSB.valueChanged.connect(self.activateCalculatePB)
-        self.hipSB = self.hipSpinBox
-        self.hipSB.setEnabled(False)
-        self.hipSB.valueChanged.connect(self.activateCalculatePB)
+        self.hipsSB = self.hipsSpinBox
+        self.hipsSB.setEnabled(False)
+        self.hipsSB.valueChanged.connect(self.activateCalculatePB)
         
         # TODO: Disable Calculate button until values have been edited
         # self.calculatePB = self.calculatePushButton
@@ -58,6 +59,20 @@ class MainWindow(QW.QMainWindow):
         self.savePB = self.findChild(QW.QPushButton, 'savePushButton')
         self.savePB.clicked.connect(self.saveData)
         self.savePB.setEnabled(False)
+
+        # Read data from file and save it to a list
+        self.dataList = []
+        jsonFile = athleteFile.ProcessJsonFile()
+        try:
+            data = jsonFile.readData('athleteData.json')
+            self.dataList = data[3]
+        except Exception as e:
+            data = (1, 'Error', str(e), self.dataList)
+        
+        
+
+        # Read previous athlete_data from disk
+
 
     # Define slots ie methods
 
@@ -86,9 +101,12 @@ class MainWindow(QW.QMainWindow):
             self.calculatePB.setEnabled(False)
 
         if self.genderCB.currentText() == 'Nainen':
-            self.hipSB.setEnabled(True)
-            if self.hipSB.value() == 50:
+            self.hipsSB.setEnabled(True)
+
+            if self.hipsSB.value() == 50:
                 self.calculatePB.setEnabled(False)
+        else:
+            self.hipsSB.setEnabled(False)
 
 
     # Calculates BMI, Finnish and US fat percentages and updates corresponding labels
@@ -98,6 +116,7 @@ class MainWindow(QW.QMainWindow):
         weight = self.weightSB.value()
         self.calculatePB.setEnabled(False)
         self.savePB.setEnabled(True)
+
         #  Convert birthday to ISO string using QtCore's methods
         birthday = self.birthDateE.date().toString(format=QtCore.Qt.ISODate)
         
@@ -114,18 +133,47 @@ class MainWindow(QW.QMainWindow):
         
         # Calculate time difference using our home made tools
         age = timetools.datediff2(birthday, dateOfWeighing, 'year')
+        neck = self.neckSB.value()
+        waist = self.waistSB.value()
+        hips = self.hipsSB.value()
 
-        # Create an athlete from Kuntoilija class
-        athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, dateOfWeighing)
+        athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, neck, waist, hips, dateOfWeighing)
+        
         bmi = athlete.bmi
-
         self.bmiLabel.setText(str(bmi))
 
-    # TODO: Make this method to save results to a disk drive
+        fiFatPercentage = athlete.fi_rasva
+        usaFatPercentage = athlete.usa_rasva
+        
+        # Set fat percentage labels
+        self.fatFiLabel.setText(str(fiFatPercentage))
+        self.fatUsLabel.setText(str(usaFatPercentage))
+
+        self.dataRow = self.constructData(athlete)
+        print(self.dataRow)
+
+    def constructData(self, athlete):
+        # A dictionary for single weighing of an athlete
+        athlete_data_row = {'nimi': athlete.nimi, 'pituus': athlete.pituus, 'paino': athlete.paino,
+                'ika': athlete.ika, 'sukupuoli': athlete.sukupuoli, 'pvm': athlete.punnitus_paiva,
+                'bmi': athlete.bmi, 'rasvaprosenttiFi': athlete.fi_rasva, 'rasvaprosenttiUs': athlete.usa_rasva
+                }
+        return athlete_data_row
+    
     # Saves data to disk
     def saveData(self):
-        pass
-
+        self.dataList.append(self.dataRow)
+        jsonfile2 = athleteFile.ProcessJsonFile()
+        status = jsonfile2.saveData('athleteData.json', self.dataList)
+        self.nameLE.clear()
+        zeroDate = QtCore.QDate(1900, 1, 1)
+        self.birthDateE.setDate(zeroDate)
+        self.heightSB.setValue(100)
+        self.weightSB.setValue(20)
+        self.neckSB.setValue(10)
+        self.waistSB.setValue(30)
+        self.hipsSB.setValue(50)
+        self.savePB.setEnabled(False)
 
 if __name__ == "__main__":
     # Create the application
