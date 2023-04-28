@@ -1,27 +1,35 @@
-# TESTS FOR THE MODULE TIMETOOLS.PY
+# TESTS FOR MODULE TIMETOOLS.PY
 
-# Lets import module to by tested
+# Lets import module to be tested
 import timetools
 
-# UNIT TESTS DEFINATIONS
+# UNIT TESTS DEFINITIONS
 
+# Test if datediff function calculates correct and absolute values
 def test_datediff():
     assert timetools.datediff('2023-04-28', '2023-04-10') == 18
     assert timetools.datediff('2023-04-10', '2023-04-28') == 18
+    
+# Test if timediff function calculates correct and absolute values
+def test_timediff():
+    assert round(timetools.timediff('11:30:15', '10:10:05'), 4) == 1.3361
+    assert round(timetools.timediff('10:10:05', '11:30:15'), 4) == 1.3361
 
-def test_test_timediff():
-    assert timetools.timediff('14:00:00', '11:00:00') == 1    
-
-
-# # Let's test date difference
-# date1 = '2023-03-21'
-# date2 = '2023-03-17'
-
-# ero = datediff2(date1, date2, 'day')
-# print('ero oli', ero, 'päivää')
-
-# # Let's test time difference
-# time1 = '10:00:00'
-# time2 = '15:25:00'
-# ero = timediff2(time1, time2, 'minute')
-# print('ero oli', ero, 'minuuttia')
+# Test if dateTimeDiff works correctly
+def test_dateTimeDiff():
+    assert timetools.dateTimeDiff('2023-04-27 10:00:00', '2023-04-28 12:30:00') == 26.5
+    
+def test_datediff2():
+    assert timetools.datediff2('2023-04-10', '2023-04-12', 'day') == 2
+    assert timetools.datediff2('2023-04-10', '2023-06-09', 'month') == 2
+    assert timetools.datediff2('2023-04-10', '2025-04-09', 'year') == 2
+    
+def test_timediff2():
+    assert timetools.timediff2('10:00:00', '12:30:00', 'hour') == 2.5
+    assert timetools.timediff2('10:00:00', '12:30:00', 'minute') == 150
+    assert timetools.timediff2('10:00:00', '12:30:00', 'second') == 9000
+   
+def test_dateTimeDiff2():
+    assert round(timetools.dateTimeDiff2('2023-04-27 10:00:00', '2023-04-28 12:30:00', 'day'), 1) == 1.1
+    assert timetools.dateTimeDiff2('2023-04-27 10:00:00', '2023-04-28 12:30:00', 'hour') == 26.5
+    assert timetools.dateTimeDiff2('2023-04-27 10:00:00', '2023-04-28 12:30:00', 'minute') == 1590

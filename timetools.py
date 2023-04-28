@@ -32,9 +32,33 @@ def timediff(t1, t2):
     t1 = datetime.datetime.strptime(t1, "%H:%M:%S")
     t2 = datetime.datetime.strptime(t2, "%H:%M:%S")
 
-    # Function calcultates a timedelta which supports only seconds or microseconds
-    seconds = abs((t2 - t1).seconds)
+    # To get absolute value check if t2 is greater than t1
+    if t2 > t1:
+        # Function calcultates a timedelta which supports only seconds or microseconds
+        seconds = abs((t2 - t1).seconds)
+    else:
+        seconds = abs((t1-t2).seconds)
+    
     hours = seconds / 3600 # minute 60 seconds, hour 60 minutes
+    return hours
+
+def dateTimeDiff(start, end):
+    """Returns difference between two moments
+
+    Args:
+        start (str): date time value in format YYYY-MM-dd hh:mm:ss
+        end (str): date time value in format YYYY-MM-dd hh:mm:ss
+
+    Returns:
+        float: difference in hours
+    """
+    v1 = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
+    v2 = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+    difference = v2 -v1
+
+    # Total_seconds calculates also seconds in the date part of dates
+    seconds = difference.total_seconds()
+    hours = seconds / 3600
     return hours
 
 def datediff2(d1, d2, unit):
@@ -53,11 +77,11 @@ def datediff2(d1, d2, unit):
     difference = abs((d2 - d1).days) # Timedelta in days
     units = {'day':1, 'year': 365, 'month': 30} # Dictionary for unit dividers
     divider = units[unit] # Choose by unit argument
-    value = difference / divider
+    value = round(difference / divider , 1)
     return value
 
 def timediff2(t1, t2, unit):
-    """Calculates the difference between two time values in chosen unit (day, minute or second)
+    """Calculates the difference between two time values in chosen unit (hour, minute or second)
 
     Args:
         t1 (str): time value in format hh:mm:ss
@@ -74,17 +98,40 @@ def timediff2(t1, t2, unit):
     value = seconds / divider
     return value
 
-#if __name__ == "__main__":
+def dateTimeDiff2(start, end, unit):
+    """Calculates difference between date time values in given units
+
+    Args:
+        start (str): date time value in format YYYY-MM-dd hh:mm:ss
+        end (str): date time value in format YYYY-MM-dd hh:mm:ss
+        unit (str): name of time unit: day, hour, minute or second
+
+    Returns:
+        float: difference in given units
+    """
+    v1 = datetime.datetime.strptime(start, "%Y-%m-%d %H:%M:%S")
+    v2 = datetime.datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+    difference = v2 -v1
+    units = {'day':86400, 'hour': 3600, 'minute': 60, 'second': 1}
+    divider = units[unit]
+    # Total_seconds calculates also seconds in the date part of dates
+    seconds = difference.total_seconds()
+    value = seconds / divider
+    return value
+
+if __name__ == "__main__":
     
-    # # Let's test date difference
-    # date1 = '2023-03-21'
-    # date2 = '2023-03-17'
+    # Let's test date difference
+    date1 = '2023-03-21'
+    date2 = '2023-03-17'
 
-    # ero = datediff2(date1, date2, 'day')
-    # print('ero oli', ero, 'päivää')
+    ero = datediff2(date1, date2, 'day')
+    print('ero oli', ero, 'päivää')
 
-    # # Let's test time difference
-    # time1 = '10:00:00'
-    # time2 = '15:25:00'
-    # ero = timediff2(time1, time2, 'minute')
-    # print('ero oli', ero, 'minuuttia')
+    # Let's test time difference
+    time1 = '10:00:00'
+    time2 = '15:25:00'
+    ero = timediff2(time1, time2, 'minute')
+    print('ero oli', ero, 'minuuttia')
+
+    print(dateTimeDiff('2023-04-28 10:00:00', '2023-04-29 11:00:00'), 'on v1')
