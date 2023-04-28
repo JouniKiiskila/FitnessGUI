@@ -74,17 +74,17 @@ def timediff2(t1, t2, unit):
     value = seconds / divider
     return value
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     
-    # Let's test date difference
-    date1 = '2023-03-21'
-    date2 = '2023-03-17'
+    # # Let's test date difference
+    # date1 = '2023-03-21'
+    # date2 = '2023-03-17'
 
-    ero = datediff2(date1, date2, 'day')
-    print('ero oli', ero, 'päivää')
+    # ero = datediff2(date1, date2, 'day')
+    # print('ero oli', ero, 'päivää')
 
-    # Let's test time difference
-    time1 = '10:00:00'
-    time2 = '15:25:00'
-    ero = timediff2(time1, time2, 'minute')
-    print('ero oli', ero, 'minuuttia')
+    # # Let's test time difference
+    # time1 = '10:00:00'
+    # time2 = '15:25:00'
+    # ero = timediff2(time1, time2, 'minute')
+    # print('ero oli', ero, 'minuuttia')
